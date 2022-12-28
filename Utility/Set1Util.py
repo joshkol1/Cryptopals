@@ -26,7 +26,7 @@ def base64_to_hex(input_base64: str) -> str:
     return input_bytes.hex()
 
 # xor two bytes, return bytes of xor
-def xor_bytes(bytes1: bytes, bytes2: bytes) -> bytes:
+def xor_bytes(bytes1: bytes|bytearray, bytes2: bytes|bytearray) -> bytes:
     if len(bytes1) != len(bytes2):
         raise ValueError("Cannot xor unequal length bytes")
     xor_array = [b1^b2 for b1, b2 in zip(bytes1, bytes2)]
@@ -76,7 +76,7 @@ def strip_pkcs7(text: bytes, block_size: int) -> bytes:
     last_byte = text[-1]
     # padding is always with 0x01 through 0x10. Second condition implies
     # not enough room in text for padding
-    if last_byte > block_size or last_byte > len(text):
+    if last_byte > block_size or last_byte > len(text) or last_byte == 0:
         raise error
     for i in range(1, last_byte+1):
         if text[-i] != last_byte:
