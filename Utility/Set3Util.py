@@ -1,5 +1,6 @@
 import Utility.Set1Util as Set1Util
 import Utility.Set2Util as Set2Util
+from Utility.MersenneTwister import MT19937
 
 def encrypt_aes_ctr(plaintext: bytes, key: bytes, nonce: int) -> bytes:
     counter = 0
@@ -21,3 +22,11 @@ def encrypt_aes_ctr(plaintext: bytes, key: bytes, nonce: int) -> bytes:
 
 def decrypt_aes_ctr(plaintext: bytes, key: bytes, nonce: int) -> bytes:
     return encrypt_aes_ctr(plaintext, key, nonce)
+
+def rng_same(rng1: MT19937, rng2: MT19937, iterations: int = 10000) -> bool:
+    for _ in range(iterations):
+        v1 = rng1.get()
+        v2 = rng2.get()
+        if v1 != v2:
+            return False
+    return True

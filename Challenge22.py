@@ -1,4 +1,5 @@
 from Utility.MersenneTwister import MT19937
+import Utility.Set3Util as Set3Util
 import subprocess
 import random
 
@@ -14,14 +15,6 @@ def get_timestamp() -> int:
         return -1
     return int(output.decode().strip())
 
-def rng_same(rng1: MT19937, rng2: MT19937, iterations: int = 10000) -> bool:
-    for _ in range(iterations):
-        v1 = rng1.get()
-        v2 = rng2.get()
-        if v1 != v2:
-            return False
-    return True
-
 def main():
     timestamp = get_timestamp()
     rng = MT19937(timestamp)
@@ -34,7 +27,7 @@ def main():
     for ts in range(later_timestamp-min_wait_seconds+10, later_timestamp-max_wait_seconds-10, -1):
         later_rng = MT19937(ts)
         later_output = later_rng.get()
-        if later_output == rng_output and rng_same(rng, later_rng):
+        if later_output == rng_output and Set3Util.rng_same(rng, later_rng):
             print("True seed: {}".format(timestamp))
             print("Detected seed: {}".format(ts))
             break
