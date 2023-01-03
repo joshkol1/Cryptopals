@@ -23,6 +23,8 @@ def getChi2(text: bytes) -> float:
             return math.inf
     chi2 = 0
     n_chars = len(text)-ignored
+    if n_chars <= 0:
+        return math.inf
     for i in range(26):
         observed = frequency[i]
         expected = n_chars*CHAR_FREQUENCY[i]

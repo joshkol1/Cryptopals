@@ -34,4 +34,5 @@ def get_random_bytes(block_size: int = 16) -> bytes:
     return token_bytes(block_size)
 
 def block_at_index(text: bytes, index: int, block_size: int) -> bytes:
-    return text[block_size*index:block_size*(index+1)]
+    end_index = min(block_size*(index+1), len(text))
+    return text[block_size*index:end_index]

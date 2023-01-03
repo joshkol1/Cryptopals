@@ -5,25 +5,23 @@ from typing import Tuple
 from typing import List
 
 # Take in xor-encrypted string (must be valid hex string)
-# Return plaintext and its chi2 score
+# Return plaintext, chi2 score, and key
 def solveSingleCharacterXor(hex_ciphertext: str) -> Tuple[bytes, float, int]:
     ciphertext_bytes = bytes.fromhex(hex_ciphertext)
     n_bytes = len(ciphertext_bytes)
     min_chi2 = math.inf
     decrypted = bytes([0]*n_bytes)
     key = -1
-    # debugging code remove later
-    bad_input = hex_ciphertext[0:4] == "4e07"
-    # end debugging
     for i in range(256):
         key_bytes = bytes([i]*n_bytes)
         plaintext = Set1Util.xor_bytes(ciphertext_bytes, key_bytes)
-        plaintext_chi2 = PlaintextScores.getChi2(plaintext)
         percent_letters = PlaintextScores.getAlphabetPercent(plaintext)
-        if plaintext_chi2 < min_chi2 and percent_letters >= 0.7:
-            min_chi2 = plaintext_chi2
-            decrypted = plaintext
-            key = i
+        if percent_letters >= 0.85:
+            plaintext_chi2 = PlaintextScores.getChi2(plaintext)
+            if plaintext_chi2 < min_chi2:
+                min_chi2 = plaintext_chi2
+                decrypted = plaintext
+                key = i
     return decrypted, min_chi2, key
 
 def chunkBytes(raw_bytes: bytes, chunk_size: int) -> List[bytes]:
