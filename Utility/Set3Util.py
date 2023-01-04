@@ -20,8 +20,8 @@ def encrypt_aes_ctr(plaintext: bytes, key: bytes, nonce: int) -> bytes:
         counter += 1
     return bytes(ciphertext)
 
-def decrypt_aes_ctr(plaintext: bytes, key: bytes, nonce: int) -> bytes:
-    return encrypt_aes_ctr(plaintext, key, nonce)
+def decrypt_aes_ctr(ciphertext: bytes, key: bytes, nonce: int) -> bytes:
+    return encrypt_aes_ctr(ciphertext, key, nonce)
 
 # run unix shell command "date +%s" to get current unix time
 def get_timestamp() -> int:

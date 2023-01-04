@@ -15,7 +15,6 @@ def ch16_encode_string(user_data: str) -> bytes:
 
 def ch16_contains_admin(encrypted: bytes) -> bool:
     decrypted = Set2Util.decrypt_aes_cbc(encrypted, random_key, random_iv)
-    print(decrypted)
     tokens = decrypted.split(b';')
     for token in tokens:
         token_split = token.split(b'=')
@@ -23,7 +22,7 @@ def ch16_contains_admin(encrypted: bytes) -> bool:
             return True
     return False
 
-def get_admin_ciphertext() -> bytes:
+def ch16_admin_ciphertext() -> bytes:
     prefix_length = len(prefix)
     trailing = 16-(prefix_length%16) if prefix_length%16 != 0 else 0
     zero_index = prefix_length//16+1 if prefix_length%16 != 0 else prefix_length//16
@@ -35,7 +34,7 @@ def get_admin_ciphertext() -> bytes:
     return bytes(admin_ciphertext)
 
 def main():
-    admin_ciphertext = get_admin_ciphertext()
+    admin_ciphertext = ch16_admin_ciphertext()
     print(ch16_contains_admin(admin_ciphertext))
     return 0
 
