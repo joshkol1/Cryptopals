@@ -23,6 +23,19 @@ def encrypt_aes_ctr(plaintext: bytes, key: bytes, nonce: int) -> bytes:
 def decrypt_aes_ctr(plaintext: bytes, key: bytes, nonce: int) -> bytes:
     return encrypt_aes_ctr(plaintext, key, nonce)
 
+# run unix shell command "date +%s" to get current unix time
+def get_timestamp() -> int:
+    import subprocess
+    tstamp_cmd = ["date", "+%s"]
+    proc = subprocess.Popen(tstamp_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    try:
+        output, _ = proc.communicate(timeout=15)
+    except subprocess.TimeoutExpired:
+        proc.kill()
+        _, _ = proc.communicate()
+        return -1
+    return int(output.decode().strip())
+
 def rng_same(rng1: MT19937, rng2: MT19937, iterations: int = 10000) -> bool:
     for _ in range(iterations):
         v1 = rng1.get()

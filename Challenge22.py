@@ -1,22 +1,9 @@
 from Utility.MersenneTwister import MT19937
 import Utility.Set3Util as Set3Util
-import subprocess
 import random
 
-# run unix shell command "date +%s" to get current unix time
-def get_timestamp() -> int:
-    tstamp_cmd = ["date", "+%s"]
-    proc = subprocess.Popen(tstamp_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    try:
-        output, _ = proc.communicate(timeout=15)
-    except subprocess.TimeoutExpired:
-        proc.kill()
-        _, _ = proc.communicate()
-        return -1
-    return int(output.decode().strip())
-
 def main():
-    timestamp = get_timestamp()
+    timestamp = Set3Util.get_timestamp()
     rng = MT19937(timestamp)
     rng_output = rng.get()
     # simulate passage of time

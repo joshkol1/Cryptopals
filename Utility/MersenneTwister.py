@@ -9,7 +9,7 @@ LOWER_MASK = (1<<R)-1
 UPPER_MASK = (~LOWER_MASK)&((1<<W)-1)
 
 class MT19937:
-    def __init__(self, mt_seed: int = 0):
+    def __init__(self, mt_seed: int = 5489):
         self._mt = [0]*N
         self._index = 0
         self.seed(mt_seed)
